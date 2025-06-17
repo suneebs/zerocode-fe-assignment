@@ -44,6 +44,8 @@ Install Dependencies: npm install or npm i
 
 Configure Environment Variables: 
     Create a .env file in the root folder:
+
+    
         VITE_FIREBASE_API_KEY=your_firebase_api_key
         VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
         VITE_FIREBASE_PROJECT_ID=your_project_id
