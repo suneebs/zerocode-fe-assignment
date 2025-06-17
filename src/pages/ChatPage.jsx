@@ -158,10 +158,14 @@ const { saveMessage } = useChatStorage(user?.uid, setMessages);
       <ChatMessage key={idx} message={msg} />
     ))}
     {loading && (
-      <div className="text-sm italic text-gray-500 dark:text-gray-400">
-        Bot is typing...
-      </div>
-    )}
+  <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 animate-pulse">
+    <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></span>
+    <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce delay-150"></span>
+    <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce delay-300"></span>
+    <span>Bot is typing...</span>
+  </div>
+)}
+
     <div ref={endRef} />
   </>
 )}
