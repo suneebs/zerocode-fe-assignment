@@ -4,9 +4,8 @@ import ChatPage from "./ChatPage";
 import Header from "../components/Header";
 
 export default function Home() {
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const [isSidebarOpen, setSidebarOpen] = useState(false); // Default: closed
 
-  // Toggle function for both open and close
   const toggleSidebar = () => setSidebarOpen((prev) => !prev);
 
   return (
@@ -14,13 +13,13 @@ export default function Home() {
       {/* Sidebar */}
       <Sidebar isOpen={isSidebarOpen} onClose={toggleSidebar} />
 
-      {/* Main content that shifts */}
+      {/* Main content */}
       <div
-        className={`flex-1 flex flex-col transform transition-all duration-300 ${
-          isSidebarOpen ? "ml-64" : "ml-0"
-        }`}
+        className={`flex-1 flex flex-col transform transition-all duration-300 
+          ${isSidebarOpen ? "md:ml-64" : "ml-0"}
+        `}
       >
-        <Header onMenuClick={toggleSidebar} /> {/* Pass toggle here */}
+        <Header onMenuClick={toggleSidebar} />
         <main className="flex-1 overflow-auto mt-16">
           <ChatPage />
         </main>
