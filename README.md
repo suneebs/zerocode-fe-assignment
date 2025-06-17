@@ -38,9 +38,12 @@ A real-time AI-powered chatbot built with React, Firebase, Firestore, and OpenRo
 ### 1. Clone the Repository
 
 git clone https://github.com/suneebs/zerocode-fe-assignment
+
 cd zerocode-fe-assignment
 
-Install Dependencies: npm install or npm i
+Install Dependencies: 
+
+npm install or npm i
 
 Configure Environment Variables: 
 
@@ -64,20 +67,21 @@ npm run dev
 ### 🧠 App Architecture
 
 
-React (Vite)
-│
+React (Vite)    
+│   
 ├── Firebase Authentication
-│    └── Email/password login
+│       └── Email/password login
 │
-├── ChatPage.jsx
-│    ├── Message input (text & voice)
-│    ├── Chat bubble rendering
-│    └── History scroll + prompt actions
-│
-├── Firestore Database
-│    └── /users/{uid}/messages
-│
-└── OpenRouter API
+├── ChatPage.jsx    
+│       ├── Message input (text & voice)
+│       ├── Chat bubble rendering
+│       └── History scroll + prompt actions
+│   
+├── Firestore Database  
+│       └── /users/{uid}/messages   
+│   
+└── OpenRouter API  
+
      └── GPT-3.5-turbo responses
 
 ## 🖼️Screenshots & Demo
@@ -89,6 +93,8 @@ React (Vite)
 ![Chat page ](docs/chat1.png)
 ### 💬 Chat UI with sidebar (light mode)
 ![Chat page with sidebar](docs/chat2.png)
+### 🔮 Prompt templates
+![Prompt templates](docs/prompt.png)
 
 ### 🎬 Demo  
 ![Demo](docs/chatbot.gif)
