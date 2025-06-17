@@ -106,29 +106,62 @@ const { saveMessage } = useChatStorage(user?.uid, setMessages);
     <div className="pt-16 min-h-screen flex flex-col bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
       <div className="flex-1 overflow-y-auto px-4 pb-36 pt-6 relative">
         {showWelcome ? (
-          <div className="h-full flex flex-col items-center justify-center text-center">
-            <Bot className="h-14 w-14 text-blue-600" />
-            <h1 className="text-2xl md:text-3xl font-semibold text-gray-800 dark:text-white">
-              Welcome to ZeroCode Chat!
-            </h1>
-            <p className="mt-4 text-gray-600 dark:text-gray-300 max-w-md">
-              Start a conversation with our AI assistant. Try asking questions,
-              getting help with code, or exploring creative ideas.
-            </p>
-          </div>
-        ) : (
-          <>
-            {messages.map((msg, idx) => (
-              <ChatMessage key={idx} message={msg} />
-            ))}
-            {loading && (
-              <div className="text-sm italic text-gray-500 dark:text-gray-400">
-                Bot is typing...
-              </div>
-            )}
-            <div ref={endRef} />
-          </>
-        )}
+  <div className="h-full flex flex-col items-center justify-center text-center">
+    <Bot className="h-14 w-14 text-blue-600" />
+    <h1 className="text-2xl md:text-3xl font-semibold text-gray-800 dark:text-white">
+      Welcome to ZeroCode Chat!
+    </h1>
+    <p className="mt-4 text-gray-600 dark:text-gray-300 max-w-md">
+      Start a conversation with our AI assistant. Try asking questions,
+      getting help with code, or exploring creative ideas.
+    </p>
+
+    {/* 💡 Prompt Templates */}
+    <div className="mt-8 grid gap-3 w-full max-w-md">
+      {[
+        {
+          label: "Learn React Hooks",
+          text: "Learn React Hooks\nGet explanations with practical examples",
+        },
+        {
+          label: "Debug Code",
+          text: "Debug Code\nGet help fixing programming issues",
+        },
+        {
+          label: "Learning Path",
+          text: "Learning Path\nGet personalized study recommendations",
+        },
+        {
+          label: "Code Review",
+          text: "Code Review\nGet feedback on your code quality",
+        },
+      ].map((prompt, idx) => (
+        <button
+          key={idx}
+          type="button"
+          onClick={() => setInput(prompt.text)}
+          className="text-left px-4 py-3 bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg border border-gray-300 dark:border-gray-600 shadow-sm transition"
+        >
+          <span className="font-medium">{prompt.label}</span>
+          <p className="text-sm text-gray-600 dark:text-gray-300">{prompt.text.split("\n")[1]}</p>
+        </button>
+      ))}
+    </div>
+  </div>
+) : (
+  <>
+    {messages.map((msg, idx) => (
+      <ChatMessage key={idx} message={msg} />
+    ))}
+    {loading && (
+      <div className="text-sm italic text-gray-500 dark:text-gray-400">
+        Bot is typing...
+      </div>
+    )}
+    <div ref={endRef} />
+  </>
+)}
+
       </div>
 
       <form
