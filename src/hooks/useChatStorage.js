@@ -1,4 +1,3 @@
-// src/hooks/useChatStorage.js
 import { useEffect } from "react";
 import { db } from "../firebase";
 import {
