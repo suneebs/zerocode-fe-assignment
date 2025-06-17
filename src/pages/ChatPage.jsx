@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import ChatMessage from "../components/ChatMessage";
 import { useAuth } from "../hooks/useAuth";
 import { Navigate } from "react-router-dom";
-import { Bot } from "lucide-react";
+import { Bot,Send  } from "lucide-react";
 import { useChatStorage } from "../hooks/useChatStorage";
 
 export default function ChatPage() {
@@ -186,11 +186,12 @@ const { saveMessage } = useChatStorage(user?.uid, setMessages);
             placeholder="Type your message..."
           />
           <button
-            type="submit"
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-          >
-            Send
-          </button>
+  type="submit"
+  className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+>
+  <Send className="w-5 h-5" />
+</button>
+
         </div>
       </form>
     </div>
