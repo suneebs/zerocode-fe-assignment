@@ -117,29 +117,33 @@ const { saveMessage } = useChatStorage(user?.uid, setMessages);
     </p>
 
     {/* 💡 Prompt Templates */}
-    <div className="mt-8 grid gap-3 w-full max-w-md">
+    <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-md">
       {[
         {
           label: "Learn React Hooks",
           text: "Learn React Hooks\nGet explanations with practical examples",
+          desc:"Explain how React hooks work with examples"
         },
         {
           label: "Debug Code",
           text: "Debug Code\nGet help fixing programming issues",
+          desc:"Help me debug this JavaScript error: [paste your error here]"
         },
         {
           label: "Learning Path",
           text: "Learning Path\nGet personalized study recommendations",
+          desc:"Create a learning plan for becoming a full-stack developer"
         },
         {
           label: "Code Review",
           text: "Code Review\nGet feedback on your code quality",
+          desc:"Review this code and suggest improvements: [paste your code here]"
         },
       ].map((prompt, idx) => (
         <button
           key={idx}
           type="button"
-          onClick={() => setInput(prompt.text)}
+          onClick={() => setInput(prompt.desc)}
           className="text-left px-4 py-3 bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg border border-gray-300 dark:border-gray-600 shadow-sm transition"
         >
           <span className="font-medium">{prompt.label}</span>
