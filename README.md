@@ -66,23 +66,24 @@ npm run dev
 
 ### 🧠 App Architecture
 
-
+```
 React (Vite)    
-│   
-├── Firebase Authentication
-│       └── Email/password login
+│
+├── Firebase Authentication  
+│   └── Email/password login
 │
 ├── ChatPage.jsx    
-│       ├── Message input (text & voice)
-│       ├── Chat bubble rendering
-│       └── History scroll + prompt actions
-│   
+│   ├── Message input (text & voice)  
+│   ├── Chat bubble rendering  
+│   └── History scroll + prompt actions
+│
 ├── Firestore Database  
-│       └── /users/{uid}/messages   
-│   
+│   └── /users/{uid}/messages
+│
 └── OpenRouter API  
+    └── GPT-3.5-turbo responses
+```
 
-     └── GPT-3.5-turbo responses
 
 ## 🖼️Screenshots & Demo
 ### 🔐 Signup Page (dark mode)
