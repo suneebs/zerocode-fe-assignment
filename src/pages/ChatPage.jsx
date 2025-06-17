@@ -3,12 +3,14 @@ import ChatMessage from "../components/ChatMessage";
 import { useAuth } from "../hooks/useAuth";
 import { Navigate } from "react-router-dom";
 import { Bot } from "lucide-react";
+import { useChatStorage } from "../hooks/useChatStorage";
 
 export default function ChatPage() {
   const { user } = useAuth();
   if (!user) return <Navigate to="/" />;
 
   const [messages, setMessages] = useState([]);
+const { saveMessage } = useChatStorage(user?.uid, setMessages);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [history, setHistory] = useState([]);
@@ -25,57 +27,59 @@ export default function ChatPage() {
   }, [messages]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!input.trim()) return;
+  e.preventDefault();
+  if (!input.trim()) return;
 
-    const userMessage = { role: "user", text: input };
-    setMessages((prev) => [...prev, userMessage]);
-    setHistory((prev) => [...prev, input]);
-    setInput("");
-    setHistoryIndex(-1);
-    setLoading(true);
+  const userMessage = { role: "user", text: input };
+  setMessages((prev) => [...prev, userMessage]);
+  setHistory((prev) => [...prev, input]);
+  saveMessage("user", input); // ✅ Save to Firestore
+  setInput("");
+  setHistoryIndex(-1);
+  setLoading(true);
 
-    const payload = {
-      model: "openai/gpt-3.5-turbo",
-      messages: [
-        { role: "system", content: "You are a helpful chatbot assistant." },
-        ...messages.map((m) => ({ role: m.role, content: m.text })),
-        { role: "user", content: input },
-      ],
-    };
-
-    try {
-      const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_OPENROUTER_API_KEY}`,
-          "HTTP-Referer": "http://localhost:5173",
-          "X-Title": "ZeroCode Chatbot",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) {
-        const errorText = await res.text();
-        throw new Error(`OpenRouter error ${res.status}: ${errorText}`);
-      }
-
-      const data = await res.json();
-      const botReply =
-        data.choices?.[0]?.message?.content ||
-        "I'm sorry, I didn't understand that.";
-      setMessages((prev) => [...prev, { role: "assistant", text: botReply }]);
-    } catch (err) {
-      console.error("Error:", err.message);
-      setMessages((prev) => [
-        ...prev,
-        { role: "assistant", text: "Error contacting OpenRouter API." },
-      ]);
-    } finally {
-      setLoading(false);
-    }
+  const payload = {
+    model: "openai/gpt-3.5-turbo",
+    messages: [
+      { role: "system", content: "You are a helpful chatbot assistant." },
+      ...messages.map((m) => ({ role: m.role, content: m.text })),
+      { role: "user", content: input },
+    ],
   };
+
+  try {
+    const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${import.meta.env.VITE_OPENROUTER_API_KEY}`,
+        "HTTP-Referer": "http://localhost:5173",
+        "X-Title": "ZeroCode Chatbot",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`OpenRouter error ${res.status}: ${errorText}`);
+    }
+
+    const data = await res.json();
+    const botReply =
+      data.choices?.[0]?.message?.content ||
+      "I'm sorry, I didn't understand that.";
+    setMessages((prev) => [...prev, { role: "assistant", text: botReply }]);
+    saveMessage("assistant", botReply); // ✅ Save to Firestore
+  } catch (err) {
+    console.error("Error:", err.message);
+    const errorMsg = "Error contacting OpenRouter API.";
+    setMessages((prev) => [...prev, { role: "assistant", text: errorMsg }]);
+    saveMessage("assistant", errorMsg);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const handleKeyDown = (e) => {
     if (e.key === "ArrowUp") {
