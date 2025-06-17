@@ -8,6 +8,8 @@ import {
   query,
   orderBy,
   onSnapshot,
+  getDocs,
+  writeBatch,
 } from "firebase/firestore";
 
 export const useChatStorage = (userId, setMessages) => {
@@ -43,5 +45,34 @@ export const useChatStorage = (userId, setMessages) => {
     }
   };
 
-  return { saveMessage };
+  const clearChat = async () => {
+    if (!userId) return;
+
+    const chatRef = collection(db, "chats", userId, "messages");
+    const snapshot = await getDocs(chatRef);
+    const batch = writeBatch(db);
+    snapshot.forEach((doc) => batch.delete(doc.ref));
+    await batch.commit();
+  };
+
+  const exportChat = async () => {
+    const chatRef = collection(db, "chats", userId, "messages");
+    const snapshot = await getDocs(chatRef);
+    const chatText = snapshot.docs
+      .map((doc) => {
+        const data = doc.data();
+        return `${data.role.toUpperCase()}: ${data.text}`;
+      })
+      .join("\n\n");
+
+    const blob = new Blob([chatText], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "zerocode-chat.txt";
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  return { saveMessage, clearChat, exportChat };
 };
