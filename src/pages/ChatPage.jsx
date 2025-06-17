@@ -6,7 +6,7 @@ import { Navigate } from "react-router-dom";
 
 export default function ChatPage() {
   const { user } = useAuth();
-  if (!user) return <Navigate to="/login" />;
+  if (!user) return <Navigate to="/" />;
 
   const [messages, setMessages] = useState([
     { role: "assistant", text: "Hello! Ask me anything 👋" },
