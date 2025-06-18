@@ -8,6 +8,7 @@ A real-time AI-powered chatbot built with React, Firebase, Firestore, and OpenRo
 
 [👉 Click here to try ZeroCode Chatbot](https://zerocode-chatbot.netlify.app)
 
+create an account using dummy email "testxxxx@gmail.com" and a password of minimum 6 characters.
 ---
 
 ## 📦 Features
