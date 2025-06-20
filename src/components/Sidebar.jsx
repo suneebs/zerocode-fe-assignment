@@ -1,11 +1,12 @@
 import React from "react";
-import { X, Trash2, Download } from "lucide-react";
+import { X, Trash2, Download, PlusCircleIcon } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import { useChatStorage } from "../hooks/useChatStorage";
 
 const Sidebar = ({ isOpen, onClose }) => {
   const { user } = useAuth();
   const { clearChat, exportChat } = useChatStorage(user?.uid, () => {});
+  const sessions =[]
 
   return (
     <div
@@ -22,7 +23,13 @@ const Sidebar = ({ isOpen, onClose }) => {
         </button>
       </div>
 
-      <nav className="p-4 space-y-4 text-gray-700 dark:text-gray-300">
+      <nav className="p-4 space-y-4 text-gray-700 dark:text-gray-300 border-b dark:border-gray-700">
+        <button
+          className="w-full flex items-center gap-2 px-4 py-2 text-green-800 dark:text-blugreen-200"
+        >
+          <PlusCircleIcon className="w-4 h-4" />
+          New Chat
+        </button>
         <button
           onClick={clearChat}
           className="w-full flex items-center gap-2 px-4 py-2 text-red-800 dark:text-red-200"
@@ -38,6 +45,32 @@ const Sidebar = ({ isOpen, onClose }) => {
           Export Chat
         </button>
       </nav>
+      <div className="p-4">
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase">
+            Chat History
+          </h3>
+          
+        </div>
+
+        <ul className="space-y-1 max-h-[50vh] overflow-y-auto pr-1 custom-scrollbar">
+          {sessions.length === 0 ? (
+            <li className="text-sm text-gray-400 italic">No previous chats</li>
+          ) : (
+            sessions.map((session) => (
+              <li
+                key={session.id}
+                onClick={() => onSelectSession(session.id)}
+                className="cursor-pointer px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition text-sm text-gray-800 dark:text-gray-200"
+              >
+                {session.title || "Untitled Chat"}
+              </li>
+            ))
+          )}
+        </ul>
+      </div>
+
+
     </div>
   );
 };
